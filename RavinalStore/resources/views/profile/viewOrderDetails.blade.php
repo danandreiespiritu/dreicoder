@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="{{ asset('storage/images/ravinallogo.jpg') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
 </head>
@@ -145,18 +146,70 @@
             @if(isset($order))
             <h2 class="text-3xl font-extrabold mb-8 text-[#183B4E] tracking-tight border-b-4 border-[#27548A] pb-2">Order Details</h2>
             <div class="mb-10">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div class="space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Order Status & Payment -->
+                    <div class="bg-gradient-to-br from-[#e3ecfa] to-[#f8fafc] rounded-2xl p-6 border border-[#d1e3fa] shadow-lg flex flex-col gap-6">
                         <div class="flex items-center gap-3">
-                            <span class="font-semibold text-gray-700">Status:</span>
-                            <span class="px-3 py-1 rounded-full text-sm font-bold shadow-sm {{ $order->status == 'delivered' ? 'bg-green-100 text-green-700 border border-green-300' : ($order->status == 'cancelled' ? 'bg-red-100 text-red-700 border border-red-300' : 'bg-yellow-100 text-yellow-700 border border-yellow-300') }}">
-                                {{ ucfirst($order->status) }}
+                            <span class="font-semibold text-[#27548A]">Status:</span>
+                            <span class="px-4 py-1 rounded-full text-sm font-bold shadow {{ 
+                                $transaction->status == 'completed' ? 'bg-green-100 text-green-700 border border-green-300' : 
+                                ($transaction->status == 'cancelled' ? 'bg-red-100 text-red-700 border border-red-300' : 
+                                'bg-yellow-100 text-yellow-700 border border-yellow-300') 
+                            }}">
+                                <i class="fas {{ 
+                                    $transaction->status == 'completed' ? 'fa-check-circle' : 
+                                    ($transaction->status == 'cancelled' ? 'fa-times-circle' : 'fa-hourglass-half') 
+                                }} mr-1"></i>
+                                {{ ucfirst($transaction->status) }}
                             </span>
                         </div>
-                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                            <p class="font-semibold text-gray-700 mb-1">Shipping Address:</p>
-                            <p class="text-gray-600 mb-2">{{ $order->address }}, {{ $order->city }}, {{ $order->state }}, {{ $order->zip }}, {{ $order->country }}</p>
-                            <p><span class="font-semibold text-gray-700">Payment Method:</span> <span class="text-gray-600">{{ ucfirst($transaction->mode) }}</span></p>
+                        <div class="flex items-center gap-3">
+                            <span class="font-semibold text-[#27548A]">Payment:</span>
+                            <span class="flex items-center gap-2 text-gray-700">
+                                @if($transaction->mode === 'Cash on delivery')
+                                    <i class="fas fa-money-bill-wave text-green-500"></i> Cash on Delivery
+                                @elseif($transaction->mode === 'gcash')
+                                    <i class="fab fa-cc-visa text-blue-500"></i> GCash
+                                @else
+                                    <i class="fas fa-wallet text-gray-500"></i> {{ ucfirst($transaction->mode) }}
+                                @endif
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="font-semibold text-[#27548A]">Order Date:</span>
+                            <span class="text-gray-700">{{ $order->created_at->format('F d, Y h:i A') }}</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="font-semibold text-[#27548A]">Order ID:</span>
+                            <span class="text-gray-700">#{{ $order->id }}</span>
+                        </div>
+                    </div>
+                    <!-- Shipping & Buyer Info -->
+                    <div class="bg-gradient-to-br from-[#f8fafc] to-[#e3ecfa] rounded-2xl p-6 border border-[#d1e3fa] shadow-lg flex flex-col gap-6">
+                        <div>
+                            <h4 class="font-semibold text-[#27548A] mb-2 flex items-center gap-2">
+                                <i class="fas fa-shipping-fast"></i> Shipping Address
+                            </h4>
+                            <address class="not-italic text-gray-700 mb-2 leading-relaxed text-sm">
+                                {{ $order->address }},
+                                {{ $order->city }},
+                                {{ $order->state }},
+                                {{ $order->zip }},
+                                {{ $order->country }}
+                            </address>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-[#27548A] mb-2 flex items-center gap-2">
+                                <i class="fas fa-user"></i> Buyer Info
+                            </h4>
+                            <div class="text-gray-700 text-sm mb-1">
+                                <span class="font-semibold">Name:</span>
+                                <span>{{ $order->buyer_name ?? $order->user->name ?? Auth::user()->name }}</span>
+                            </div>
+                            <div class="text-gray-700 text-sm">
+                                <span class="font-semibold">Contact:</span>
+                                <span>{{ $order->contact ?? $order->user->email ?? Auth::user()->email }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -178,6 +231,7 @@
                         <tr class="hover:bg-gray-50 transition">
                             <td class="py-3 px-5 border-b flex items-center gap-3">
                                 @if($orderItem->product)
+                                    <img src="{{ asset('storage/' . $orderItem->product->Image) }}" alt="{{ $orderItem->product->ProductName }}" class="w-12 h-12 object-cover rounded-md">
                                     <span class="font-medium text-gray-800">{{ $orderItem->product->ProductName }}</span>
                                 @else
                                     <span class="text-red-500">Product not found</span>
@@ -205,13 +259,13 @@
                 </div>
             </div>
 
-            @if($transaction->status !== 'delivered')
+            @if($transaction->status !== 'completed')
                 <form action="{{ route('profile.cancel', $order->id) }}" method="POST" class="mt-8 flex justify-end">
                     @csrf
                     @method('PUT')
                     <button
                         type="button"
-                        class="bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white font-bold px-8 py-3 rounded-lg shadow-lg transition-all duration-200 {{ $order->status === 'cancelled' ? 'opacity-50 cursor-not-allowed pointer-events-none' : '' }}"
+                        class="bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white font-bold px-8 py-3 rounded-lg shadow-lg transition-all duration-200 {{ $transaction->status === 'cancelled' ? 'opacity-50 cursor-not-allowed pointer-events-none' : '' }}"
                         @if($transaction->status !== 'cancelled')
                         onclick="document.getElementById('cancelModal').classList.remove('hidden')"
                         @endif

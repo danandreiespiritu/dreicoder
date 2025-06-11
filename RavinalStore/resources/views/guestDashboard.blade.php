@@ -139,7 +139,7 @@
                 @endif
             </div>
             <div class="mt-6 text-center">
-                <a href="{{ url('user/product/userViewProduct') }}" class="text-[#27548A] hover:underline">View All Products</a>
+                <a href="{{ url('user/products') }}" class="text-[#27548A] hover:underline">View All Products</a>
             </div>
         </section>
         <!-- Products Section -->

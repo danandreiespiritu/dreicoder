@@ -1,0 +1,6 @@
+{
+    "require": {
+        "spatie/laravel-permission": "^6.17",
+        "surfsidemedia/shoppingcart": "^2.0"
+    }
+}

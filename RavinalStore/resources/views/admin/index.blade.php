@@ -134,7 +134,7 @@
             </div>
             <div>
                 <div class="text-xs text-blue-700 font-semibold uppercase tracking-wide">Total Orders</div>
-                <div class="font-bold text-2xl text-blue-900">{{ \App\Models\Order::count() }}</div>
+                <div class="font-bold text-2xl text-blue-900">{{ \App\Models\Transaction::where('status', 'pending')->count() }}</div>
             </div>
         </div>
         <!-- Delivered Orders -->
@@ -154,7 +154,7 @@
             </div>
             <div>
                 <div class="text-xs text-yellow-700 font-semibold uppercase tracking-wide">Total Amount</div>
-                <div class="font-bold text-2xl text-yellow-900">₱{{ number_format(\App\Models\Order::sum('total'), 2) }}</div>
+                <div class="font-bold text-2xl text-yellow-900">₱{{ number_format(\App\Models\Order::whereHas('transaction', function($q) { $q->where('status', 'completed'); })->sum('total'), 2) }}</div>
             </div>
         </div>
         <!-- Delivered Orders Amount -->

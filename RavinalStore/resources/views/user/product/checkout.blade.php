@@ -193,7 +193,7 @@
                     <div class="flex flex-col gap-2">
                         <label for="mode" class="font-semibold text-sm text-[#1a3557]">Payment Mode</label>
                         <select name="mode" id="mode" class="border border-[#e3e8ee] px-3 py-2 rounded">
-                            <option value="cod">Cash on Delivery</option>
+                            <option value="Cash on delivery">Cash on Delivery</option>
                             <option value="gcash">GCash</option>
                         </select>
                     </div>

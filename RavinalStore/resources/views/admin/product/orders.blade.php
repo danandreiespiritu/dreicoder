@@ -173,6 +173,7 @@
                                         <th class="px-4 py-2 border text-center">Order Date</th>
                                         <th class="px-4 py-2 border text-center">Total Items</th>
                                         <th class="px-4 py-2 border text-center">Delivered On</th>
+                                        <th class="px-4 py-2 border text-center">Cancelled On</th>
                                         <th class="px-4 py-2 border"></th>
                                     </tr>
                                 </thead>
@@ -193,15 +194,15 @@
                                             </td>
                                             <td class="px-4 py-2 border md:text-center flex md:table-cell justify-between md:justify-center">
                                                 <span class="font-semibold md:hidden">Subtotal:</span>
-                                                ${{ number_format($order->subtotal, 2) }}
+                                                &#8369;{{ number_format($order->subtotal, 2) }}
                                             </td>
                                             <td class="px-4 py-2 border md:text-center flex md:table-cell justify-between md:justify-center">
                                                 <span class="font-semibold md:hidden">Tax:</span>
-                                                ${{ number_format($order->tax, 2) }}
+                                                &#8369;{{ number_format($order->tax, 2) }}
                                             </td>
                                             <td class="px-4 py-2 border md:text-center flex md:table-cell justify-between md:justify-center">
                                                 <span class="font-semibold md:hidden">Total:</span>
-                                                ${{ number_format($order->total, 2) }}
+                                                &#8369;{{ number_format($order->total, 2) }}
                                             </td>
                                             <td class="px-4 py-2 border md:text-center flex md:table-cell justify-between md:justify-center">
                                                 <span class="font-semibold md:hidden">Status:</span>
@@ -222,6 +223,10 @@
                                             <td class="px-4 py-2 border md:text-center flex md:table-cell justify-between md:justify-center">
                                                 <span class="font-semibold md:hidden">Delivered On:</span>
                                                 {{ $order->delivery_date ?? 'N/A' }}
+                                            </td>
+                                            <td class="px-4 py-2 border md:text-center flex md:table-cell justify-between md:justify-center">
+                                                <span class="font-semibold md:hidden">Delivered On:</span>
+                                                {{ $order->cancellation_date ?? 'N/A' }}
                                             </td>
                                             <td class="px-4 py-2 border md:text-center flex md:table-cell justify-between md:justify-center">
                                                 <a href="{{ url('admin/product/transaction/' . $order->id) }}" class="text-blue-500 hover:underline">

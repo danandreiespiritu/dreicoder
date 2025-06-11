@@ -142,7 +142,7 @@
                         </div>
                         <div class="order-info__item bg-[#F0F6FF] rounded-lg px-4 py-3 text-left">
                             <label class="font-medium text-[#2563EB]">Total:</label>
-                            <span class="block text-[#222]">${{ number_format($order->total, 2) }}</span>
+                            <span class="block text-[#222]">&#8369;{{ number_format($order->total, 2) }}</span>
                         </div>
                         @if(isset($transaction))
                             <div class="order-info__item bg-[#F0F6FF] rounded-lg px-4 py-3 text-left">

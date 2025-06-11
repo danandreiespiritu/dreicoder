@@ -199,7 +199,7 @@ class CartController extends Controller
 
         // Validating transaction mode
         $request->validate([
-            'mode' => 'required|in:cod,gcash',
+            'mode' => 'required|in:Cash on delivery,gcash',
         ]);
 
         // Saving the transaction

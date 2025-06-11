@@ -132,7 +132,7 @@
                 </div>
                 <div class="flex justify-between items-center">
                     <span class="font-medium text-gray-600">Customer Name:</span>
-                    <span class="text-gray-900">{{ $order->user->name ?? 'N/A' }}</span>
+                    <span class="text-gray-900">{{ ucfirst($order->user->name) ?? 'N/A' }}</span>
                 </div>
                 <div class="flex justify-between items-center">
                     <span class="font-medium text-gray-600">Total Amount:</span>
@@ -140,7 +140,7 @@
                 </div>
                 <div class="flex justify-between items-center">
                     <span class="font-medium text-gray-600">Status:</span>
-                    <span class="text-gray-900">{{ $order->status }}</span>
+                    <span class="text-gray-900">{{ ucfirst($order->status) }}</span>
                 </div>
             </div>
             <h3 class="text-lg md:text-xl font-semibold mt-6 mb-4">Shipping Address</h3>
@@ -180,7 +180,12 @@
                     <tbody>
                         @foreach ($order->orderItems as $orderItem)
                             <tr class="hover:bg-gray-50">
-                                <td class="py-2 px-3 md:px-4 border-b text-xs md:text-sm">{{ $orderItem->product->ProductName ?? 'N/A' }}</td>
+                                <td class="py-2 px-3 md:px-4 border-b text-xs md:text-sm">
+                                    @if(isset($orderItem->product->Image))
+                                        <img src="{{ asset('storage/' . $orderItem->product->Image) }}" alt="{{ $orderItem->product->ProductName ?? 'Product' }}" class="w-10 h-10 object-cover inline-block rounded mr-2">
+                                    @endif
+                                    {{ $orderItem->product->ProductName ?? 'N/A' }}
+                                </td>
                                 <td class="py-2 px-3 md:px-4 border-b text-xs md:text-sm">{{ $orderItem->quantity }}</td>
                                 <td class="py-2 px-3 md:px-4 border-b text-xs md:text-sm">₱{{ number_format($orderItem->price, 2) }}</td>
                             </tr>
@@ -196,7 +201,7 @@
                     $status = strtolower($Transaction->status);
                     $color = $status === 'completed' ? 'text-green-600' : ($status === 'cancelled' ? 'text-red-600' : 'text-gray-600');
                 @endphp
-                <span class="{{ $color }} font-semibold text-base">{{ $Transaction->status }}</span>
+                <span class="{{ $color }} font-semibold text-base">{{ ucfirst($Transaction->status) }}</span>
             </div>
 
             <h3 class="text-lg md:text-xl font-semibold mt-6 mb-4">Transaction Actions</h3>
